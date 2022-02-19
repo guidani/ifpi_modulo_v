@@ -16,14 +16,17 @@ class Operations {
     return n1 ~/ n2;
   }
 
+  // letra c
   num exponential() {
     return pow(this.n1, this.n2);
   }
 
+  // letra d
   bool eh_inteiro() {
     return this.n1 is int;
   }
 
+  // letra e
   bool nao_eh_inteiro() {
     return this.n1 is! int;
   }
