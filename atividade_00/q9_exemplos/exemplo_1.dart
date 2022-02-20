@@ -3,10 +3,7 @@ class CalculaMedia {
   double? nota2;
   double? nota3;
 
-  CalculaMedia(n1, n2, n3) {
-    this.nota1 = n1;
-    this.nota2 = n2;
-    this.nota3 = n3;
+  CalculaMedia(this.nota1, this.nota2, this.nota3) {
   }
 
   double media() {

@@ -1,16 +1,13 @@
 class CalculaMedia {
-  double? nota1;
-  double? nota2;
-  double? nota3;
+  late double nota1;
+  late double nota2;
+  late double nota3;
 
-  CalculaMedia(n1, n2, n3) {
-    this.nota1 = n1;
-    this.nota2 = n2;
-    this.nota3 = n3;
+  CalculaMedia(this.nota1, this.nota2, this.nota3) {
   }
 
   double media() {
-    double resultado = (this.nota1! + this.nota2! + this.nota3!) / 3;
+    double resultado = (this.nota1 + this.nota2 + this.nota3) / 3;
     return resultado;
   }
 

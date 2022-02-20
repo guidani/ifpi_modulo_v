@@ -3,11 +3,7 @@ class CalculaMedia {
   double? nota2;
   double? nota3;
 
-  CalculaMedia(n1, n2, n3) {
-    this.nota1 = n1;
-    this.nota2 = n2;
-    this.nota3 = n3;
-  }
+  CalculaMedia(this.nota1, this.nota2, this.nota3) {}
 
   double media() {
     double resultado = (this.nota1! + this.nota2! + this.nota3!) / 3;
@@ -24,8 +20,11 @@ class CalculaMedia {
 }
 
 void main() {
-  double nota1 = 3;
+  double? nota1 = 3;
+  // nota1 ??= 0;
+
   double nota2 = 4;
+  
   double nota3 = 4;
 
   var calculoMedia = CalculaMedia(nota1, nota2, nota3);
