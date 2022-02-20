@@ -1,2 +1,2 @@
 # ifpi_modulo_v
-Repository for all classes.
+Branch da disciplina de Programação para Dispositivos Moveis.
