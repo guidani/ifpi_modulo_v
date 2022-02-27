@@ -15,4 +15,12 @@ abstract class ContaGenerica {
   String get correntista {
     return this._correntista;
   }
+
+  void depositar(double valor) {
+    this._saldo += valor;
+  }
+
+  double sacar(double valor) {
+    return this._saldo -= valor;
+  }
 }

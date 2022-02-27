@@ -8,4 +8,10 @@ class ContaCorrente extends ContaGenerica implements Tributavel {
   double calculaTributos() {
     return this.saldo * 0.10;
   }
+
+  @override
+  double sacar(double valor) {
+    double taxa = valor * 0.05;
+    return super.sacar(valor - taxa);
+  }
 }

@@ -8,5 +8,4 @@ class ContaSemImposto extends ContaGenerica implements Tributavel{
   double calculaTributos() {
     return 0.0;
   }
-
 }
