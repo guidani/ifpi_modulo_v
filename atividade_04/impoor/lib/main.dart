@@ -32,6 +32,7 @@ class ImPoor extends StatelessWidget {
         title: const Center(child: Text("I'm Poor")),
       ),
       body: Center(
+        // Fix overflow error when the image is in large screens
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
