@@ -23,7 +23,7 @@ class _QuizPageState extends State<QuizPage> {
     numRespostasCorretas = 0;
   }
 
-    double calcPercentualAcertos(){
+  double calcPercentualAcertos() {
     int totalQuestoes = quizBrain.numberOfQuestions();
     double percentual = (numRespostasCorretas * 100) / totalQuestoes;
     return percentual;
@@ -39,6 +39,7 @@ class _QuizPageState extends State<QuizPage> {
             MaterialPageRoute(
               builder: (context) => ResultPage(points, _resetValues),
             ));
+
       } else {
         if (userPickedAnswer == null) {
           scoreKeeper.add(const Icon(
@@ -81,21 +82,21 @@ class _QuizPageState extends State<QuizPage> {
               "Questão ${quizBrain.getCurrentQuestion()}/${quizBrain.numberOfQuestions()}",
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 20.0,
+                fontSize: 18.0,
               ),
             ),
             Text(
               "${calcPercentualAcertos().ceil()}% de acerto",
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 20.0,
+                fontSize: 18.0,
               ),
             ),
             Text(
               "pontuação: ${points}",
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 20.0,
+                fontSize: 18.0,
               ),
             ),
           ],

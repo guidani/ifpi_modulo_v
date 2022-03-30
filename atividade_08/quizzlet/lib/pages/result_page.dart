@@ -28,8 +28,15 @@ class _ResultPageState extends State<ResultPage> {
               ),
             ),
             MaterialButton(
+              // onPressed: () {
+              //       Navigator.pop(context, true);
+              //   widget.reset();
+              // },
               onPressed: () {
-                    Navigator.pop(context, true);
+                Navigator.popUntil(
+                  context,
+                  ModalRoute.withName('/'),
+                );
                 widget.reset();
               },
               child: Container(

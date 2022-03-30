@@ -6,6 +6,7 @@ import 'models/quiz_brain.dart';
 QuizBrain quizBrain = QuizBrain();
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();  
   runApp(const Quizzler());
 }
 
@@ -21,7 +22,7 @@ class Quizzler extends StatelessWidget {
         body: const SafeArea(
           child: Padding(
             padding: EdgeInsets.all(20.0),
-            child: QuizPage(),
+            child: InitialPage(),
           ),
         ),
       ),
