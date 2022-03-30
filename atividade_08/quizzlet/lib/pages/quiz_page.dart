@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quizzlet/pages/result_page.dart';
+import 'package:quizzlet/widgets/my_expanded_button.dart';
 
 import '../main.dart';
 
@@ -14,14 +14,19 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
   int points = 0;
+  int numRespostasCorretas = 0;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    quizBrain.reset();
+  void _resetValues() {
     points = 0;
     scoreKeeper = [];
+    quizBrain.reset();
+    numRespostasCorretas = 0;
+  }
+
+    double calcPercentualAcertos(){
+    int totalQuestoes = quizBrain.numberOfQuestions();
+    double percentual = (numRespostasCorretas * 100) / totalQuestoes;
+    return percentual;
   }
 
   void checkAnswer(bool? userPickedAnswer) {
@@ -30,8 +35,10 @@ class _QuizPageState extends State<QuizPage> {
     setState(() {
       if (quizBrain.isFinished() == true) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ResultPage(points)));
-
+            context,
+            MaterialPageRoute(
+              builder: (context) => ResultPage(points, _resetValues),
+            ));
       } else {
         if (userPickedAnswer == null) {
           scoreKeeper.add(const Icon(
@@ -40,6 +47,7 @@ class _QuizPageState extends State<QuizPage> {
           ));
         } else {
           if (userPickedAnswer == correctAnswer) {
+            numRespostasCorretas += 1;
             points += 10;
             scoreKeeper.add(const Icon(
               Icons.check,
@@ -63,29 +71,36 @@ class _QuizPageState extends State<QuizPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        SizedBox(
+        const SizedBox(
           height: 10.0,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Questão ${quizBrain.getCurrentQuestion()}",
-              style: TextStyle(
+              "Questão ${quizBrain.getCurrentQuestion()}/${quizBrain.numberOfQuestions()}",
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+              ),
+            ),
+            Text(
+              "${calcPercentualAcertos().ceil()}% de acerto",
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20.0,
               ),
             ),
             Text(
               "pontuação: ${points}",
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20.0,
               ),
             ),
           ],
         ),
-        Divider(
+        const Divider(
           height: 1.0,
           color: Colors.white,
         ),
@@ -106,68 +121,26 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.green,
-              ),
-              child: const Text(
-                'True',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                ),
-              ),
-              onPressed: () {
-                //The user picked true.
-                checkAnswer(true);
-              },
-            ),
-          ),
+        MyExpandedButton(
+          checkAnswer: () {
+            checkAnswer(true);
+          },
+          btnColor: Colors.green,
+          text: "TRUE",
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                'False',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {
-                //The user picked false.
-                checkAnswer(false);
-              },
-            ),
-          ),
+        MyExpandedButton(
+          checkAnswer: () {
+            checkAnswer(false);
+          },
+          btnColor: Colors.red,
+          text: "FALSE",
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.blueGrey,
-              ),
-              child: const Text(
-                'Maybe',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {
-                //The user picked maybe.
-                checkAnswer(null);
-              },
-            ),
-          ),
+        MyExpandedButton(
+          checkAnswer: () {
+            checkAnswer(null);
+          },
+          btnColor: Colors.grey,
+          text: "MAYBE",
         ),
         Row(
           children: scoreKeeper,

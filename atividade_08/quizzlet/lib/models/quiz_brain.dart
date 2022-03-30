@@ -38,7 +38,7 @@ class QuizBrain {
     }
   }
 
-  String getCurrentQuestion(){
+  String getCurrentQuestion() {
     return "${_currentQuestion + 1}";
   }
 
@@ -60,5 +60,9 @@ class QuizBrain {
 
   void reset() {
     _currentQuestion = 0;
+  }
+
+  int numberOfQuestions() {
+    return _questionBank.length;
   }
 }

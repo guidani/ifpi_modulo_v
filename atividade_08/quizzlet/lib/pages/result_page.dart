@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quizzlet/main.dart';
 import 'package:quizzlet/pages/quiz_page.dart';
 
 class ResultPage extends StatefulWidget {
   final int points;
-  const ResultPage(this.points, {Key? key}) : super(key: key);
+  final Function reset;
+  const ResultPage(this.points, this.reset, {Key? key}) : super(key: key);
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -23,26 +22,22 @@ class _ResultPageState extends State<ResultPage> {
           children: [
             Text(
               "Resultado: ${widget.points} pontos",
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 30.0,
               ),
             ),
             MaterialButton(
               onPressed: () {
-                // quizBrain.reset();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => QuizPage(),
-                    ));
+                    Navigator.pop(context, true);
+                widget.reset();
               },
               child: Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(vertical: 15.0),
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
                 width: double.infinity,
                 color: Colors.green,
-                child: Text(
+                child: const Text(
                   "RESETAR",
                   style: TextStyle(
                     color: Colors.white,
