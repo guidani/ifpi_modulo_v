@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Fetching Data',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -52,7 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('fetching data two'),
+        title: const Text('Fetching data'),
+        centerTitle: true,
       ),
       body: Center(
         child: FutureBuilder<List<Post>>(
@@ -63,10 +65,52 @@ class _MyHomePageState extends State<MyHomePage> {
               return ListView.builder(
                   itemCount: post.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      leading: const FlutterLogo(),
-                      title: Text(post[index].title),
-                      trailing: const Icon(Icons.add),
+                    return Dismissible(
+                      key: UniqueKey(),
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (direction) {
+                        if (direction == DismissDirection.endToStart) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              duration: const Duration(seconds: 1),
+                              backgroundColor: Colors.red,
+                              content: const Text('Deleted'),
+                              action: SnackBarAction(
+                                label: 'OK',
+                                textColor: Colors.white,
+                                onPressed: (){},
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 15.0),
+                        color: Colors.red,
+                        child: const Icon(Icons.delete, color: Colors.white,),
+                      ),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: const FlutterLogo(),
+                            title: Text(post[index].title),
+                            trailing: const Icon(Icons.add),
+                            onTap: () {
+                              var snackBar = SnackBar(
+                                duration: const Duration(milliseconds: 500),
+                                content: Text('Post: ${post[index].id} clicado'),
+                                action: SnackBarAction(
+                                  label: 'OK',
+                                  onPressed: () {},
+                                ),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            },
+                          ),
+                          Divider(height: 1,),
+                        ],
+                      ),
                     );
                   });
             } else if (snapshot.hasError) {
