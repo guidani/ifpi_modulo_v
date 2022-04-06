@@ -32,21 +32,45 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late Future<List<Post>> futurePosts;
+  List<Post> allPosts = [];
+  ScrollController _scrollController = ScrollController();
+  int current_page = 0;
 
   @override
   void initState() {
     super.initState();
-    futurePosts = getData();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        // TODO: dar um jeito de chamar a função novamente;
+        loadData();
+      }
+    });
   }
 
-  Future<List<Post>> getData() async {
-    var url = Uri.parse('https://jsonplaceholder.typicode.com/posts');
-    var response = await http.get(url);
+  loadData() {
+    setState(() {
+      current_page++;
+    });
+
+    return getData(current_page);
+  }
+
+  Future<List<Post>> getData(int p) async {
+    final baseUrl = 'https://jsonplaceholder.typicode.com';
+    final url = Uri.parse('$baseUrl/posts?_page=$current_page&_limit=20');
+    final response = await http.get(url);
     if (response.statusCode != 200) {
       throw Exception('Failed to load Posts');
     }
     List jsonDecoded = jsonDecode(response.body);
-    return jsonDecoded.map((e) => Post.fromJson(e)).toList();
+    final x = jsonDecoded.map((e) => Post.fromJson(e)).toList();
+    for (var i in x) {
+      print(i.id);
+      allPosts.add(i);
+    }
+    // return jsonDecoded.map((e) => Post.fromJson(e)).toList();
+    return [];
   }
 
   @override
@@ -58,59 +82,33 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: FutureBuilder<List<Post>>(
-          future: getData(),
+          future: loadData(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<Post> post = snapshot.data!;
+              // for (var p in post) {
+              //   allPosts.add(p);
+              // }
               return ListView.builder(
-                  itemCount: post.length,
+                  controller: _scrollController,
+                  itemCount: allPosts.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Dismissible(
-                      key: UniqueKey(),
-                      direction: DismissDirection.endToStart,
-                      onDismissed: (direction) {
-                        if (direction == DismissDirection.endToStart) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              duration: const Duration(seconds: 1),
-                              backgroundColor: Colors.red,
-                              content: const Text('Deleted'),
-                              action: SnackBarAction(
-                                label: 'OK',
-                                textColor: Colors.white,
-                                onPressed: (){},
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                      background: Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(right: 15.0),
-                        color: Colors.red,
-                        child: const Icon(Icons.delete, color: Colors.white,),
-                      ),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            leading: const FlutterLogo(),
-                            title: Text(post[index].title),
-                            trailing: const Icon(Icons.add),
-                            onTap: () {
-                              var snackBar = SnackBar(
-                                duration: const Duration(milliseconds: 500),
-                                content: Text('Post: ${post[index].id} clicado'),
-                                action: SnackBarAction(
-                                  label: 'OK',
-                                  onPressed: () {},
-                                ),
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                            },
+                    return ListTile(
+                      leading: const FlutterLogo(),
+                      title: Text(
+                          "${allPosts[index].id}: ${allPosts[index].title}"),
+                      trailing: const Icon(Icons.add),
+                      onTap: () {
+                        var snackBar = SnackBar(
+                          content:
+                              Text('allPosts: ${allPosts[index].id} clicado'),
+                          action: SnackBarAction(
+                            label: 'OK',
+                            onPressed: () {},
                           ),
-                          Divider(height: 1,),
-                        ],
-                      ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      },
                     );
                   });
             } else if (snapshot.hasError) {
@@ -121,5 +119,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _scrollController.dispose();
+    super.dispose();
   }
 }

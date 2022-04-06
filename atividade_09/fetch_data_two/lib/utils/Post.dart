@@ -11,9 +11,5 @@ class Post {
       user_id: item['userId'],
       title: item['title']
     );
-    /*var user_id = item['userId'];
-    var id = item['id'];
-    var title = item['title'];
-    print("User ID; ${user_id} -- ID: ${id} -- Title: ${title}");*/
   }
 }
