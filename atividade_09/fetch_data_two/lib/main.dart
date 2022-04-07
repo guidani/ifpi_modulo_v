@@ -57,20 +57,24 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<List<Post>> getData(int p) async {
-    final baseUrl = 'https://jsonplaceholder.typicode.com';
-    final url = Uri.parse('$baseUrl/posts?_page=$current_page&_limit=20');
-    final response = await http.get(url);
-    if (response.statusCode != 200) {
-      throw Exception('Failed to load Posts');
+    try {
+      final baseUrl = 'https://jsonplaceholder.typicode.com';
+      final url = Uri.parse('$baseUrl/posts?_page=$current_page&_limit=15');
+      final response = await http.get(url);
+      if (response.statusCode != 200) {
+        throw Exception('Failed to load Posts');
+      }
+      List jsonDecoded = jsonDecode(response.body);
+      final x = jsonDecoded.map((e) => Post.fromJson(e)).toList();
+      for (var i in x) {
+        print(i.id);
+        allPosts.add(i);
+      }
+      // return jsonDecoded.map((e) => Post.fromJson(e)).toList();
+      return [];
+    } catch (error) {
+      throw Exception(error);
     }
-    List jsonDecoded = jsonDecode(response.body);
-    final x = jsonDecoded.map((e) => Post.fromJson(e)).toList();
-    for (var i in x) {
-      print(i.id);
-      allPosts.add(i);
-    }
-    // return jsonDecoded.map((e) => Post.fromJson(e)).toList();
-    return [];
   }
 
   @override
@@ -89,7 +93,8 @@ class _MyHomePageState extends State<MyHomePage> {
               // for (var p in post) {
               //   allPosts.add(p);
               // }
-              return ListView.builder(
+              return ListView.separated(
+                  separatorBuilder: (context, index) => Divider(),
                   controller: _scrollController,
                   itemCount: allPosts.length,
                   itemBuilder: (BuildContext context, int index) {
