@@ -94,26 +94,71 @@ class _MyHomePageState extends State<MyHomePage> {
               //   allPosts.add(p);
               // }
               return ListView.separated(
-                  separatorBuilder: (context, index) => Divider(),
+                  separatorBuilder: (context, index) => const Divider(),
                   controller: _scrollController,
                   itemCount: allPosts.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      leading: const FlutterLogo(),
-                      title: Text(
-                          "${allPosts[index].id}: ${allPosts[index].title}"),
-                      trailing: const Icon(Icons.add),
-                      onTap: () {
-                        var snackBar = SnackBar(
-                          content:
-                              Text('allPosts: ${allPosts[index].id} clicado'),
-                          action: SnackBarAction(
-                            label: 'OK',
-                            onPressed: () {},
-                          ),
+                    return Dismissible(
+                      direction: DismissDirection.endToStart,
+                      key: ValueKey<int>(allPosts.length),
+                      confirmDismiss: (direction) async {
+                        return await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: const Text('Deseja realmente deletar?'),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true);
+                                  },
+                                  child: const Text('SIM'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                  child: const Text('Não'),
+                                ),
+                              ],
+                            );
+                          },
                         );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
+                      onDismissed: (direction) {
+                        setState(() {
+                          allPosts.removeAt(index);
+                        });
+                      },
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 15.0),
+                        child: const Text(
+                          'Deletar',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0),
+                        ),
+                        color: Colors.red,
+                      ),
+                      child: ListTile(
+                        leading: const FlutterLogo(),
+                        title: Text(
+                            "${allPosts[index].id}: ${allPosts[index].title}"),
+                        trailing: const Icon(Icons.add),
+                        onTap: () {
+                          var snackBar = SnackBar(
+                            content:
+                                Text('allPosts: ${allPosts[index].id} clicado'),
+                            action: SnackBarAction(
+                              label: 'OK',
+                              onPressed: () {},
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        },
+                      ),
                     );
                   });
             } else if (snapshot.hasError) {
