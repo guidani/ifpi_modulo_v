@@ -7,27 +7,27 @@ class InitialPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Quizzlet')),
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              alignment: Alignment.center,
-              child: MaterialButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => QuizPage()),
-                  );
-                },
-                child: Text("Quiz 1"),
-              ),
-            )
-          ],
-        ),
+      appBar: AppBar(
+        title: Text('Quizzlet'),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            alignment: Alignment.center,
+            child: MaterialButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => QuizPage()),
+                );
+              },
+              child: Text("Quiz 1"),
+            ),
+          )
+        ],
       ),
     );
   }

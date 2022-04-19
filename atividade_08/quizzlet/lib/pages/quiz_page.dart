@@ -68,85 +68,93 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        const SizedBox(
-          height: 10.0,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Questão ${quizBrain.getCurrentQuestion()}/${quizBrain.numberOfQuestions()}",
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-              ),
-            ),
-            Text(
-              "${calcPercentualAcertos().ceil()}% de acerto",
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-              ),
-            ),
-            Text(
-              "pontuação: ${points}",
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-              ),
-            ),
-          ],
-        ),
-        const Divider(
-          height: 1.0,
-          color: Colors.white,
-        ),
-        Expanded(
-          flex: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Center(
-              child: Text(
-                // Texto da questão
-                quizBrain.getQuestionText(),
-                textAlign: TextAlign.center,
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text('Another Quiz'),
+        centerTitle: true,
+      ),
+      backgroundColor: Colors.grey.shade900,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const SizedBox(
+            height: 10.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Questão ${quizBrain.getCurrentQuestion()}/${quizBrain.numberOfQuestions()}",
                 style: const TextStyle(
-                  fontSize: 25.0,
                   color: Colors.white,
+                  fontSize: 15.0,
+                ),
+              ),
+              Text(
+                "${calcPercentualAcertos().ceil()}% de acerto",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 15.0,
+                ),
+              ),
+              Text(
+                "pontuação: ${points}",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 15.0,
+                ),
+              ),
+            ],
+          ),
+          const Divider(
+            height: 1.0,
+            color: Colors.white,
+          ),
+          Expanded(
+            flex: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: Text(
+                  // Texto da questão
+                  quizBrain.getQuestionText(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 25.0,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        MyExpandedButton(
-          checkAnswer: () {
-            checkAnswer(true);
-          },
-          btnColor: Colors.green,
-          text: "TRUE",
-        ),
-        MyExpandedButton(
-          checkAnswer: () {
-            checkAnswer(false);
-          },
-          btnColor: Colors.red,
-          text: "FALSE",
-        ),
-        MyExpandedButton(
-          checkAnswer: () {
-            checkAnswer(null);
-          },
-          btnColor: Colors.grey,
-          text: "MAYBE",
-        ),
-        Row(
-          children: scoreKeeper,
-        )
-      ],
+          MyExpandedButton(
+            checkAnswer: () {
+              checkAnswer(true);
+            },
+            btnColor: Colors.green,
+            text: "TRUE",
+          ),
+          MyExpandedButton(
+            checkAnswer: () {
+              checkAnswer(false);
+            },
+            btnColor: Colors.red,
+            text: "FALSE",
+          ),
+          MyExpandedButton(
+            checkAnswer: () {
+              checkAnswer(null);
+            },
+            btnColor: Colors.grey,
+            text: "MAYBE",
+          ),
+          Row(
+            children: scoreKeeper,
+          )
+        ],
+      ),
     );
   }
 }
