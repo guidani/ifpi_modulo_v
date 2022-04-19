@@ -33,36 +33,36 @@ class _QuizPageState extends State<QuizPage> {
     bool correctAnswer = quizBrain.getCorrectAnswer();
 
     setState(() {
-      if (quizBrain.isFinished() == true) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ResultPage(points, _resetValues),
-            ));
-
+      if (userPickedAnswer == null) {
+        scoreKeeper.add(const Icon(
+          Icons.question_mark,
+          color: Colors.grey,
+        ));
       } else {
-        if (userPickedAnswer == null) {
+        if (userPickedAnswer == correctAnswer) {
+          numRespostasCorretas += 1;
+          points += 10;
           scoreKeeper.add(const Icon(
-            Icons.question_mark,
-            color: Colors.grey,
+            Icons.check,
+            color: Colors.green,
           ));
         } else {
-          if (userPickedAnswer == correctAnswer) {
-            numRespostasCorretas += 1;
-            points += 10;
-            scoreKeeper.add(const Icon(
-              Icons.check,
-              color: Colors.green,
-            ));
-          } else {
-            scoreKeeper.add(const Icon(
-              Icons.close,
-              color: Colors.red,
-            ));
-          }
+          scoreKeeper.add(const Icon(
+            Icons.close,
+            color: Colors.red,
+          ));
         }
-        quizBrain.nextQuestion();
+        if (quizBrain.isFinished() == true) {
+          int currentPoints = points;
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ResultPage(currentPoints, _resetValues)));
+          this._resetValues();
+        }
       }
+      quizBrain.nextQuestion();
     });
   }
 
